@@ -7,17 +7,49 @@ from datetime import date
 def getData(file):
 # get a list of dictionary objects from the file
 #Input: file name
-#Ouput: return a list of dictionary objects where
+#Output: return a list of dictionary objects where
 #the keys are from the first row in the data. and the values are each of the other rows
+	inFile = open(file, "r")
+	lines = inFile.readlines()
+	inFile.close()
 
-	pass
+	dictList = []
+
+	#Separate first row into dict
+	dict_keys = lines[0].split(',') #[First, Last, Email, Class, DOB]
+	first_key = dict_keys[0]
+	last_key = dict_keys[1]
+	email_key = dict_keys[2]
+	class_key = dict_keys[3]
+	dob_key = dict_keys[4]
+
+
+	for line in lines:
+		newDict = {}
+		values= line.split(',') #[Fuller, Harrell, someemail, year, dob]
+		newDict[first_key] = values[0] 
+		newDict[last_key] = values[1]
+		newDict[email_key] = values[2]
+		newDict[class_key] = values[3]
+		newDict[dob_key] = values[4]
+
+		dictList.append(newDict)
+	return dictList
+
+#data:
+# [{First, Last, email, class, dob}, 
+# {First, Last, email, class, dob}, 
+# {First, Last, email, class, dob}]
 
 def mySort(data,col):
 # Sort based on key/column
 #Input: list of dictionaries and col (key) to sort on
 #Output: Return the first item in the sorted list as a string of just: firstName lastName
+	sorted_list = []
+	for item in data:
+		
 
-	pass
+	
 
 
 def classSizes(data):
@@ -46,6 +78,7 @@ def mySortPrint(a,col,fileName):
 
 	pass
 
+#Extra credit - 10 pts
 def findAge(a):
 # def findAge(a):
 # Input: list of dictionaries
