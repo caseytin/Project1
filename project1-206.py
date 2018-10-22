@@ -66,8 +66,17 @@ def findMonth(a):
 # Find the most common birth month form this data
 # Input: list of dictionaries
 # Output: Return the month (1-12) that had the most births in the data
-
-	pass
+	months = {}
+	for dct in a:
+		birthday = dct["DOB"]
+		month = birthday[:2].rstrip('/')
+		if month in months:
+			months[month] += 1
+		else:
+			months[month] = 1
+	data = sorted(months.items(), key=lambda x: x[1], reverse = True)
+	common = int(data[0])
+	return common[0]
 
 def mySortPrint(a,col,fileName):
 #Similar to mySort, but instead of returning single
