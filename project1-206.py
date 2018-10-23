@@ -3,7 +3,6 @@ import filecmp
 from dateutil.relativedelta import *
 from datetime import date
 
-
 def getData(file):
 # get a list of dictionary objects from the file
 #Input: file name
@@ -21,9 +20,9 @@ def getData(file):
 	last_key = dict_keys[1]
 	email_key = dict_keys[2]
 	class_key = dict_keys[3]
-	dob_key = dict_keys[4]
+	dob_key = dict_keys[4].rstrip('\n')
 
-	for line in lines:
+	for line in lines[1:]:
 		newDict = {}
 		values= line.split(',') 
 		newDict[first_key] = values[0] 
@@ -83,13 +82,14 @@ def findMonth(a):
 	for dct in a:
 		date_of_birth = dct['DOB']
 		month = date_of_birth[:2].rstrip('/')
-		if month in months:
-			months[month] += 1
+		if month in monthsDict:
+			monthsDict[month] += 1
 		else:
-			months[month] = 1
-	sortedList = sorted(months.items(), key=lambda x:x[1], reverse=True)
-	print(sortedList)
-	return sortedList[0]
+			monthsDict[month] = 1
+	sortedList = sorted(monthsDict.items(), key=lambda x:x[1], reverse=True)
+	common_month = sortedList[0]
+	#print(common_month)
+	return int(common_month[0])
 
 def mySortPrint(a,col,fileName):
 #Similar to mySort, but instead of returning single
@@ -103,7 +103,7 @@ def mySortPrint(a,col,fileName):
 		firstName = item['First']
 		lastName = item['Last']
 		email = item['Email']
-		results = "%s, %s, %s,\n" % (firstName, lastName, email)
+		results = "{},{},{}\n".format(firstName, lastName, email)
 		outFile.write(results)
 	outFile.close()
 
@@ -114,7 +114,6 @@ def findAge(a):
 # Output: Return the average age of the students and round that age to the nearest
 # integer.  You will need to work with the DOB and the current date to find the current
 # age in years.
-
 	pass
 
 
