@@ -16,17 +16,16 @@ def getData(file):
 	dictList = []
 
 	#Separate first row into dict
-	dict_keys = lines[0].split(',') #[First, Last, Email, Class, DOB]
+	dict_keys = lines[0].split(',') 
 	first_key = dict_keys[0]
 	last_key = dict_keys[1]
 	email_key = dict_keys[2]
 	class_key = dict_keys[3]
 	dob_key = dict_keys[4]
 
-
 	for line in lines:
 		newDict = {}
-		values= line.split(',') #[Fuller, Harrell, someemail, year, dob]
+		values= line.split(',') 
 		newDict[first_key] = values[0] 
 		newDict[last_key] = values[1]
 		newDict[email_key] = values[2]
@@ -36,21 +35,16 @@ def getData(file):
 		dictList.append(newDict)
 	return dictList
 
-#data:
-# [{First, Last, email, class, dob}, 
-# {First, Last, email, class, dob}, 
-# {First, Last, email, class, dob}]
-
 def mySort(data,col):
 # Sort based on key/column
 #Input: list of dictionaries and col (key) to sort on
 #Output: Return the first item in the sorted list as a string of just: firstName lastName
-	sorted_list = []
-	for item in data:
-		
-
-	
-
+	top_dict = sorted(data, key=lambda x:x[col], reverse=True)
+	for item in top_dict:
+		firstName = item['First']
+		lastName = item['Last']
+	output = firstName + " " + lastName
+	return output
 
 def classSizes(data):
 # Create a histogram
@@ -58,7 +52,7 @@ def classSizes(data):
 # Output: Return a list of tuples sorted by the number of students in that class in
 # descending order
 # [('Senior', 26), ('Junior', 25), ('Freshman', 21), ('Sophomore', 18)]
-
+	
 	pass
 
 
@@ -67,16 +61,16 @@ def findMonth(a):
 # Input: list of dictionaries
 # Output: Return the month (1-12) that had the most births in the data
 	months = {}
-	for dct in a:
-		birthday = dct["DOB"]
+	for item in a:
+		birthday = item['DOB']
 		month = birthday[:2].rstrip('/')
 		if month in months:
 			months[month] += 1
 		else:
 			months[month] = 1
-	data = sorted(months.items(), key=lambda x: x[1], reverse = True)
-	common = int(data[0])
-	return common[0]
+	data = sorted(months.items(), key=lambda x:x[1], reverse=True)
+	winner = int(data[0])
+	return winner[0]
 
 def mySortPrint(a,col,fileName):
 #Similar to mySort, but instead of returning single
@@ -84,6 +78,14 @@ def mySortPrint(a,col,fileName):
 # as fist,last,email
 #Input: list of dictionaries, col (key) to sort by and output file name
 #Output: No return value, but the file is written
+	outFile = open(fileName, 'w')
+	top_dict = sorted(a, key=lambda x:x[col], reverse=True)
+	for item in top_dict:
+		firstName = item['First']
+		lastName = item['Last']
+		email = item['Email']
+	outFile.write('{}, {}, {}\n'.format(firstName, lastName, email))
+	outFile.close()
 
 	pass
 
@@ -121,8 +123,7 @@ def main():
 	data = getData('P1DataA.csv')
 	data2 = getData('P1DataB.csv')
 	total += test(type(data),type([]),50)
-
-	print()
+	
 	print("First student sorted by First name:")
 	total += test(mySort(data,'First'),'Abbot Le',25)
 	total += test(mySort(data2,'First'),'Adam Rocha',25)
@@ -134,7 +135,7 @@ def main():
 	print("First student sorted by Email:")
 	total += test(mySort(data,'Email'),'Hope Craft',25)
 	total += test(mySort(data2,'Email'),'Orli Humphrey',25)
-
+	
 	print("\nEach grade ordered by size:")
 	total += test(classSizes(data),[('Junior', 28), ('Senior', 27), ('Freshman', 23), ('Sophomore', 22)],25)
 	total += test(classSizes(data2),[('Senior', 26), ('Junior', 25), ('Freshman', 21), ('Sophomore', 18)],25)
