@@ -52,25 +52,44 @@ def classSizes(data):
 # Output: Return a list of tuples sorted by the number of students in that class in
 # descending order
 # [('Senior', 26), ('Junior', 25), ('Freshman', 21), ('Sophomore', 18)]
-	
-	pass
+	classDict = {}
+	senior_count = 0
+	junior_count = 0
+	sophomore_count = 0
+	freshman_count = 0
+	for dct in data:
+		class_standing = dct['Class']
+		if (class_standing == 'Senior'):
+			senior_count += 1
+		elif (class_standing == 'Junior'):
+			junior_count += 1
+		elif (class_standing == 'Sophomore'):
+			sophomore_count += 1
+		elif (class_standing == 'Freshman'):
+			freshman_count += 1
+	classDict['Senior'] = senior_count
+	classDict['Junior'] = junior_count
+	classDict['Sophomore'] = sophomore_count
+	classDict['Freshman'] = freshman_count
 
+	sortedList = sorted(classDict.items(), key=lambda x:x[1], reverse=True)
+	return(sortedList)
 
 def findMonth(a):
 # Find the most common birth month form this data
 # Input: list of dictionaries
 # Output: Return the month (1-12) that had the most births in the data
-	months = {}
-	for item in a:
-		birthday = item['DOB']
-		month = birthday[:2].rstrip('/')
+	monthsDict = {}
+	for dct in a:
+		date_of_birth = dct['DOB']
+		month = date_of_birth[:2].rstrip('/')
 		if month in months:
 			months[month] += 1
 		else:
 			months[month] = 1
-	data = sorted(months.items(), key=lambda x:x[1], reverse=True)
-	winner = int(data[0])
-	return winner[0]
+	sortedList = sorted(months.items(), key=lambda x:x[1], reverse=True)
+	print(sortedList)
+	return sortedList[0]
 
 def mySortPrint(a,col,fileName):
 #Similar to mySort, but instead of returning single
@@ -79,15 +98,14 @@ def mySortPrint(a,col,fileName):
 #Input: list of dictionaries, col (key) to sort by and output file name
 #Output: No return value, but the file is written
 	outFile = open(fileName, 'w')
-	top_dict = sorted(a, key=lambda x:x[col], reverse=True)
+	top_dict = sorted(a, key=lambda x:x[col])
 	for item in top_dict:
 		firstName = item['First']
 		lastName = item['Last']
 		email = item['Email']
-	outFile.write('{}, {}, {}\n'.format(firstName, lastName, email))
+		results = "%s, %s, %s,\n" % (firstName, lastName, email)
+		outFile.write(results)
 	outFile.close()
-
-	pass
 
 #Extra credit - 10 pts
 def findAge(a):
@@ -140,9 +158,11 @@ def main():
 	total += test(classSizes(data),[('Junior', 28), ('Senior', 27), ('Freshman', 23), ('Sophomore', 22)],25)
 	total += test(classSizes(data2),[('Senior', 26), ('Junior', 25), ('Freshman', 21), ('Sophomore', 18)],25)
 
+	
 	print("\nThe most common month of the year to be born is:")
 	total += test(findMonth(data),3,15)
 	total += test(findMonth(data2),3,15)
+	
 
 	print("\nSuccessful sort and print to file:")
 	mySortPrint(data,'Last','results.csv')
