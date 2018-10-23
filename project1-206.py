@@ -138,7 +138,7 @@ def main():
 	total = 0
 	print("Read in Test data and store as a list of dictionaries")
 	data = getData('P1DataA.csv')
-	data2 = getData('P1DataB.csv')
+	data2 = getData('P1DataB2.csv')
 	total += test(type(data),type([]),50)
 	
 	print("First student sorted by First name:")
